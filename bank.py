@@ -25,13 +25,13 @@ def banco():
                 print("ERRO: Informe um valor inteiro Válido!")
 
 
-        if escolha == 1:
-            print("Depósito")
+        if escolha == 1: #Depósito
+            decoracao('Depósito')
             deposito = float(input("Quanto gostaria de depositar: "))
             saldo += deposito
             extrato['deposito'].append(deposito)
-        elif escolha == 2:
-            print("Saque")
+        elif escolha == 2: #Saque
+            decoracao('Saque')
             saque = float(input("Qual o valor da quantia que deseja sacar: "))
             if saque > saldo:
                 print("Saldo insuficiente para realizar transação!")
@@ -45,20 +45,23 @@ def banco():
                 extrato['saque'].append(saque)
                 saldo -= saque
                 print(f"Transação realizada com sucesso.")
-        elif escolha == 3:
-            print("Extrato")
+        elif escolha == 3: #Extrato
+            decoracao('Extrato')
             print(f"Seu Saldo atual corresponde a: R${saldo:.2f}")
             print("Saques: " + ", ".join([f"R$ {x:.2f}" for x in extrato["saque"]]))
             print("Depósitos: " + ", ".join([f"R$ {x:.2f}" for x in extrato["deposito"]]))
-            print(f"Número de Saques: {len(extrato['saque'])}")
-            print(f"Número de depósitos: {len(extrato['deposito'])}")
         elif escolha == 0:
+            print('~'*30)
             print("Programa encerrado com sucesso!")
             break
         else:
             print("Digite um valor válido!")
 
-
+def decoracao(msg):
+    tam = len(msg) + 4
+    print("-="*tam)
+    print(f"{msg:^25}")
+    print("-="*tam)
 
 def main():
     banco()
