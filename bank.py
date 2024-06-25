@@ -1,3 +1,8 @@
+def deposito(saldo: float):
+    deposito = float(input("Quanto gostaria de depositar: "))
+    saldo += deposito
+    return saldo, deposito
+
 
 def banco():
     menu = """
@@ -28,9 +33,10 @@ def banco():
 
         if escolha == 1: #Depósito
             decoracao('Depósito')
-            deposito = float(input("Quanto gostaria de depositar: "))
-            saldo += deposito
-            extrato['deposito'].append(deposito)
+            action_depositar = deposito(saldo)
+            valor_deposito = action_depositar[1] #Pega o valor deposito da funcao action_depositar
+            saldo += action_depositar[0] #Pega o valor do saldo da funcao action_depositar
+            extrato['deposito'].append(valor_deposito) #armazena o valor do deposito no extrato
         elif escolha == 2: #Saque
             decoracao('Saque')
             saque = float(input("Qual o valor da quantia que deseja sacar: "))
@@ -56,8 +62,8 @@ def banco():
         elif escolha == 3: #Extrato
             decoracao('Extrato')
             print(f"Seu Saldo atual corresponde a: R${saldo:.2f}")
-            print("Saques: " + ", ".join([f"R$ {x:.2f}" for x in extrato["saque"]]))
-            print("Depósitos: " + ", ".join([f"R$ {x:.2f}" for x in extrato["deposito"]]))
+            print(f"Saques: {extrato['saque']}")
+            print(f"Depósitos: {extrato['deposito']}")
         elif escolha == 0:
             print('~'*30)
             print("Programa encerrado com sucesso!")
