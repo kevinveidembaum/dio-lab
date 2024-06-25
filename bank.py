@@ -3,6 +3,14 @@ def deposito(saldo: float):
     saldo += deposito
     return saldo, deposito
 
+def saque(saldo: float):
+    saque = float(input("Qual o valor da quantia que deseja sacar: "))
+    saldo -= saque
+    return saque, saldo
+
+
+
+
 
 def banco():
     menu = """
@@ -34,18 +42,19 @@ def banco():
         if escolha == 1: #Depósito
             decoracao('Depósito')
             action_depositar = deposito(saldo)
-            valor_deposito = action_depositar[1] #Pega o valor deposito da funcao action_depositar
-            saldo += action_depositar[0] #Pega o valor do saldo da funcao action_depositar
+            valor_deposito = action_depositar[1] #Pega o valor deposito da funcao deposito()
+            saldo = action_depositar[0] #Pega o valor do saldo da funcao deposito()
             extrato['deposito'].append(valor_deposito) #armazena o valor do deposito no extrato
         elif escolha == 2: #Saque
             decoracao('Saque')
-            saque = float(input("Qual o valor da quantia que deseja sacar: "))
+            action_sacar = saque(saldo)
+            valor_saque = action_sacar[0] #Pega o valor do saque da funcao saque()
 
-            insuficiente_saldo = saque > saldo 
+            insuficiente_saldo = valor_saque > saldo 
 
             limite_saque_dia = len(extrato["saque"]) == LIMITE_SAQUES
 
-            valor_limite_saque = saque > LIMITE_VALOR_SAQUE
+            valor_limite_saque = valor_saque > LIMITE_VALOR_SAQUE
 
             if insuficiente_saldo:
                 print("Saldo insuficiente para realizar transação!")
@@ -56,8 +65,8 @@ def banco():
                 print("Você ultrapassou o valor limite de saque de R$500,00")
                 print("Transação cancelada!")
             else:
-                extrato['saque'].append(saque)
-                saldo -= saque
+                saldo = action_sacar[1] #Pega o valor do saldo da funcao saque()
+                extrato['saque'].append(valor_saque) #armazena o valor do saque no extrato
                 print(f"Transação realizada com sucesso.")
         elif escolha == 3: #Extrato
             decoracao('Extrato')
