@@ -1,3 +1,4 @@
+
 def banco():
     menu = """
         [1] Depósito
@@ -33,12 +34,19 @@ def banco():
         elif escolha == 2: #Saque
             decoracao('Saque')
             saque = float(input("Qual o valor da quantia que deseja sacar: "))
-            if saque > saldo:
+
+            insuficiente_saldo = saque > saldo 
+
+            limite_saque_dia = len(extrato["saque"]) == LIMITE_SAQUES
+
+            valor_limite_saque = saque > LIMITE_VALOR_SAQUE
+
+            if insuficiente_saldo:
                 print("Saldo insuficiente para realizar transação!")
-            elif len(extrato["saque"]) == LIMITE_SAQUES:
+            elif limite_saque_dia:
                 print("Você atingiu o limite de saques diários.")
                 print("Transação cancelada!")
-            elif saque > LIMITE_VALOR_SAQUE:
+            elif valor_limite_saque:
                 print("Você ultrapassou o valor limite de saque de R$500,00")
                 print("Transação cancelada!")
             else:
