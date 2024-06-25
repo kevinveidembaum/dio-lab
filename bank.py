@@ -1,26 +1,40 @@
+def obter_valor(mensagem: str) -> float:
+    while True:
+            try:
+                return float(input(mensagem))                
+            except ValueError:
+                print("ERRO: Informe um valor numérico Válido!")
+
+def exibir_menu() -> int:
+    menu = """
+    [1] Depósito
+    [2] Saque
+    [3] Extrato
+    [0] Sair
+
+    ==> """
+    while True:
+        try:
+            escolha = int(input(menu))
+            if escolha in [1, 2, 3, 0]:
+                return escolha
+            else:
+                print("ERRO: Selecione um valor presente no menu!")
+        except ValueError:
+            print("ERRO: Informe um valor Inteiro válido!")
+            
+
 def deposito(saldo: float):
-    deposito = float(input("Quanto gostaria de depositar: "))
+    deposito = obter_valor("Quanto gostaria de depositar: ")
     saldo += deposito
     return saldo, deposito
 
 def saque(saldo: float):
-    saque = float(input("Qual o valor da quantia que deseja sacar: "))
+    saque = obter_valor("Qual o valor da quantia que deseja sacar: ")
     saldo -= saque
     return saque, saldo
 
-
-
-
-
 def banco():
-    menu = """
-        [1] Depósito
-        [2] Saque
-        [3] Extrato
-        [0] Sair
-
-    ==> """
-
     LIMITE_SAQUES = 3
     LIMITE_VALOR_SAQUE = 500.00
     saldo = 0
@@ -31,13 +45,7 @@ def banco():
 
 
     while True:
-        while True:
-            try:
-                escolha = int(input(menu))
-                break
-            except ValueError:
-                print("ERRO: Informe um valor inteiro Válido!")
-
+        escolha = exibir_menu()
 
         if escolha == 1: #Depósito
             decoracao('Depósito')
