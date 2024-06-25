@@ -29,8 +29,26 @@ def deposito(saldo: float):
     saldo += deposito
     return saldo, deposito
 
-def saque(saldo: float):
+def saque(saldo: float, saques_hoje: int) -> tuple[float, float]:
+    LIMITE_SAQUES = 3
+    LIMITE_VALOR_SAQUE = 500.00
+
     saque = obter_valor("Qual o valor da quantia que deseja sacar: ")
+
+    if saques_hoje >= LIMITE_SAQUES:
+        print("Você atingiu o limite de saques diários.")
+        print("Transação cancelada!")
+        return saldo, 0.0
+    
+    if saque > saldo:
+        print("Saldo insuficiente para realizar transação!")
+        return saldo, 0.0
+    
+    if saque > LIMITE_VALOR_SAQUE:
+        print("Você ultrapassou o valor limite de saque de R$500,00")
+        print("Transação cancelada!")
+        return saldo, 0.0
+
     saldo -= saque
     return saldo, saque
 
@@ -41,14 +59,11 @@ def exibir_extrato(saldo: float, extrato: dict):
     print(f"Depósitos: {extrato['deposito']}")
 
 def banco():
-    LIMITE_SAQUES = 3
-    LIMITE_VALOR_SAQUE = 500.00
     saldo = 0
     extrato = {
         "saque": [],
         "deposito": [] 
     }
-
 
     while True:
         escolha = exibir_menu()
@@ -59,23 +74,9 @@ def banco():
             extrato['deposito'].append(valor_deposito) #armazena o valor do deposito no extrato
         elif escolha == 2: #Saque
             decoracao('Saque')
-            saldo, valor_saque = saque(saldo)
-            
-            insuficiente_saldo = valor_saque > saldo 
+            saldo, valor_saque = saque(saldo, len(extrato["saque"]))
 
-            limite_saque_dia = len(extrato["saque"]) == LIMITE_SAQUES
-
-            valor_limite_saque = valor_saque > LIMITE_VALOR_SAQUE
-
-            if insuficiente_saldo:
-                print("Saldo insuficiente para realizar transação!")
-            elif limite_saque_dia:
-                print("Você atingiu o limite de saques diários.")
-                print("Transação cancelada!")
-            elif valor_limite_saque:
-                print("Você ultrapassou o valor limite de saque de R$500,00")
-                print("Transação cancelada!")
-            else:
+            if valor_saque > 0.0:
                 extrato['saque'].append(valor_saque) #armazena o valor do saque no extrato
                 print(f"Transação realizada com sucesso.")
         elif escolha == 3: #Extrato
