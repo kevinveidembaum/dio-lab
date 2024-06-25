@@ -1,3 +1,14 @@
+def obter_string(mensagem: str) -> str:
+    while True:
+        try:
+            user = str(input(mensagem)).strip()
+            if user.isalpha():
+                return user
+            else:
+                print("Digite um nome válido: ")
+        except ValueError:
+            print("ERRO: Informe uma String Válida!")
+
 def obter_valor(mensagem: str) -> float:
     while True:
             try:
@@ -10,13 +21,15 @@ def exibir_menu() -> int:
     [1] Depósito
     [2] Saque
     [3] Extrato
+    [4] Cadastrar Usuário
+    [5] Criar Conta Corrente
     [0] Sair
 
     ==> """
     while True:
         try:
             escolha = int(input(menu))
-            if escolha in [1, 2, 3, 0]:
+            if escolha in [0, 1, 2, 3, 4, 5]:
                 return escolha
             else:
                 print("ERRO: Selecione um valor presente no menu!")
@@ -58,6 +71,15 @@ def exibir_extrato(saldo: float, extrato: dict):
     print(f"Saques: {extrato['saque']}")
     print(f"Depósitos: {extrato['deposito']}")
 
+def criar_user():
+    usuario = {
+        "nome": [],
+        "nasc": [],
+        "cpf": [],
+        "endereco": []
+    }
+    nome = obter_string("Digite seu nome: ")
+
 def banco():
     saldo = 0
     extrato = {
@@ -75,12 +97,13 @@ def banco():
         elif escolha == 2: #Saque
             decoracao('Saque')
             saldo, valor_saque = saque(saldo, len(extrato["saque"]))
-
             if valor_saque > 0.0:
                 extrato['saque'].append(valor_saque) #armazena o valor do saque no extrato
                 print(f"Transação realizada com sucesso.")
         elif escolha == 3: #Extrato
             exibir_extrato(saldo, extrato)
+        elif escolha == 4:
+            criar_user()
         elif escolha == 0:
             print('~'*30)
             print("Programa encerrado com sucesso!")
