@@ -19,12 +19,14 @@ def obter_string(mensagem: str, nome=False, cpf=False) -> str:
         except ValueError:
             print("ERRO: Informe uma String Válida!")
 
+
 def obter_valor(mensagem: str) -> float:
     while True:
             try:
                 return float(input(mensagem))                
             except ValueError:
                 print("ERRO: Informe um valor numérico Válido!")
+
 
 def exibir_menu() -> int:
     menu = """
@@ -53,6 +55,7 @@ def deposito(saldo: float):
     saldo += deposito
     return saldo, deposito
 
+
 def saque(saldo: float, saques_hoje: int) -> tuple[float, float]:
     LIMITE_SAQUES = 3
     LIMITE_VALOR_SAQUE = 500.00
@@ -76,11 +79,13 @@ def saque(saldo: float, saques_hoje: int) -> tuple[float, float]:
     saldo -= saque
     return saldo, saque
 
+
 def exibir_extrato(saldo: float, extrato: dict):
     decoracao('Extrato')
     print(f"Seu Saldo atual corresponde a: R${saldo:.2f}")
     print(f"Saques: {extrato['saque']}")
     print(f"Depósitos: {extrato['deposito']}")
+
 
 def criar_user(lista_users: list):
     usuario = {
@@ -99,8 +104,6 @@ def criar_user(lista_users: list):
                 print("Já tem um cadastro com esse CPF, tente novamente!")
             else:
                 break
-    
-    
 
     usuario["nome"] = nome
     usuario["nasc"] = nasc
@@ -110,6 +113,7 @@ def criar_user(lista_users: list):
     lista_users.append(usuario)
     decoracao("Usuário Cadastrado com sucesso!", "≃", 35)
             
+
 def listar_usuarios(lista_user: list):
     decoracao("Lista de Usuários")
     if not lista_user:
@@ -117,10 +121,33 @@ def listar_usuarios(lista_user: list):
     for user in lista_user:
         print(f"Nome: {user['nome']}, Nascimento: {user['nasc']}, CPF: {user['cpf']}, Endereço: {user['endereco']}")
 
-def criar_conta(usuario: list):
-    agencia = "0001"
-    numero_conta = 0
-    print(usuario[0])
+
+def criar_conta(lista_user: list):
+
+    if not lista_user:
+        print("Não há nenhum usuário registrado")
+        return
+
+    decoracao("Criar Conta Corrente")
+    print("Selecione um usuário para criar a conta:")
+
+    for i, user in enumerate(lista_user, start=1):
+        print(f"{i} - {user['nome']}")
+    
+    while True:
+        try:
+            escolha = int(obter_string("Digite o número correspondente ao usuário: "))
+            if 1 <= escolha <= len(lista_user):
+                usuario_conta = lista_user[escolha - 1] #Seleciona e armazena quem terá a conta
+                break
+            else:
+                print("Escolha inválida!")
+        except ValueError:
+            print("ERRO. Digite um valor válido!")
+    
+    
+
+
     
 
 
@@ -131,6 +158,7 @@ def banco():
         "deposito": [] 
     }
     lista_user = []
+    lista_conta = []
 
     while True:
         escolha = exibir_menu()
