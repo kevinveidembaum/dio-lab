@@ -1,4 +1,15 @@
 def obter_string(mensagem: str, nome=False, cpf=False) -> str:
+    """
+    Solicita uma string do usuário com base em parâmetros específicos.
+
+    Args:
+        mensagem (str): A mensagem a ser exibida ao usuário.
+        nome (bool): Se True, valida que a entrada contém apenas letras.
+        cpf (bool): Se True, valida que a entrada contém exatamente 11 dígitos numéricos.
+
+    Returns:
+        str: A string validada inserida pelo usuário.
+    """
     while True:
         try:
             user = str(input(mensagem)).strip()
@@ -7,20 +18,27 @@ def obter_string(mensagem: str, nome=False, cpf=False) -> str:
                     return user
                 else:
                     print("Digite um nome válido!")
-
-            if cpf:
+            elif cpf:
                 if user.isnumeric():
                     return user
                 else:
                     print("Informe um CPF válido!")
-            
-            if not nome and not cpf:
+            else:
                 return user
         except ValueError:
             print("ERRO: Informe uma String Válida!")
 
 
 def obter_valor(mensagem: str) -> float:
+    """
+    Solicita um valor numérico do usuário.
+
+    Args:
+        mensagem (str): A mensagem a ser exibida ao usuário.
+
+    Returns:
+        float: O valor numérico inserido pelo usuário.
+    """
     while True:
             try:
                 return float(input(mensagem))                
@@ -29,6 +47,12 @@ def obter_valor(mensagem: str) -> float:
 
 
 def exibir_menu() -> int:
+    """
+    Exibe o menu de opções para o usuário e solicita uma escolha.
+
+    Returns:
+        int: A opção escolhida pelo usuário.
+    """
     menu = """
     [1] Depósito
     [2] Saque
@@ -52,12 +76,31 @@ def exibir_menu() -> int:
             
 
 def deposito(saldo: float):
+    """
+    Solicita um valor de depósito do usuário e atualiza o saldo.
+
+    Args:
+        saldo (float): O saldo atual do usuário.
+
+    Returns:
+        tuple: O saldo atualizado e o valor do depósito.
+    """
     deposito = obter_valor("Quanto gostaria de depositar: ")
     saldo += deposito
     return saldo, deposito
 
 
 def saque(saldo: float, saques_hoje: int) -> tuple[float, float]:
+    """
+    Solicita um valor de saque do usuário e atualiza o saldo, respeitando limites diários.
+
+    Args:
+        saldo (float): O saldo atual do usuário.
+        saques_hoje (int): O número de saques realizados hoje.
+
+    Returns:
+        tuple: O saldo atualizado e o valor do saque, ou 0.0 se a transação for cancelada.
+    """
     LIMITE_SAQUES = 3
     LIMITE_VALOR_SAQUE = 500.00
 
@@ -82,6 +125,13 @@ def saque(saldo: float, saques_hoje: int) -> tuple[float, float]:
 
 
 def exibir_extrato(saldo: float, extrato: dict):
+    """
+    Exibe o extrato de transações do usuário.
+
+    Args:
+        saldo (float): O saldo atual do usuário.
+        extrato (dict): O histórico de saques e depósitos do usuário.
+    """
     decoracao('Extrato')
     print(f"Seu Saldo atual corresponde a: R${saldo:.2f}")
     print(f"Saques: {extrato['saque']}")
@@ -89,16 +139,24 @@ def exibir_extrato(saldo: float, extrato: dict):
 
 
 def criar_user(lista_users: list):
+    """
+    Solicita informações do usuário e cadastra um novo usuário.
+
+    Args:
+        lista_users (list): A lista de usuários cadastrados.
+    """
     usuario = {
         "nome": "",
         "nasc": "",
         "cpf": "",
         "endereco": ""
     }
+
     decoracao("Cadastrar Usuário")
     nome = obter_string("Digite seu nome: ", True)
     nasc = obter_valor("Digite seu ano de nascimento: ")
     endereco = obter_string("Informe seu endereço: ")
+
     while True:
             cpf = obter_string("Informe seu CPF: ", False, True)
             if any(user['cpf'] in cpf for user in lista_users):
@@ -116,6 +174,12 @@ def criar_user(lista_users: list):
             
 
 def listar_usuarios(lista_user: list):
+    """
+    Exibe a lista de usuários cadastrados.
+
+    Args:
+        lista_user (list): A lista de usuários cadastrados.
+    """
     decoracao("Lista de Usuários")
     if not lista_user:
         print("Não há registro de usuários")
@@ -124,6 +188,12 @@ def listar_usuarios(lista_user: list):
 
 
 def listar_contas(lista_conta: list):
+    """
+    Exibe a lista de contas cadastradas.
+
+    Args:
+        lista_conta (list): A lista de contas cadastradas.
+    """
     decoracao("Lista de Contas")
     if not lista_conta:
         print("Não há registro de Contas")
@@ -133,7 +203,13 @@ def listar_contas(lista_conta: list):
 
 
 def criar_conta(lista_user: list, lista_conta: list):
+    """
+    Cria uma nova conta para um usuário existente.
 
+    Args:
+        lista_user (list): A lista de usuários cadastrados.
+        lista_conta (list): A lista de contas cadastradas.
+    """
     if not lista_user:
         print("Não há nenhum usuário registrado")
         return
@@ -171,6 +247,10 @@ def criar_conta(lista_user: list, lista_conta: list):
 
 
 def banco():
+    """
+    Função principal que gerencia o fluxo do banco, controlando o saldo, extrato, 
+    lista de usuários e contas, além de exibir o menu e realizar as operações escolhidas.
+    """
     saldo = 0
     extrato = {
         "saque": [],
