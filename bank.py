@@ -1,11 +1,15 @@
-def obter_string(mensagem: str) -> str:
+def obter_string(mensagem: str, nome=False) -> str:
     while True:
         try:
             user = str(input(mensagem)).strip()
-            if user.isalpha():
-                return user
+            if nome:
+                if user.isalpha():
+                    return user
+                else:
+                    print("Digite um nome válido!")
             else:
-                print("Digite um nome válido: ")
+                return user
+            
         except ValueError:
             print("ERRO: Informe uma String Válida!")
 
@@ -23,13 +27,14 @@ def exibir_menu() -> int:
     [3] Extrato
     [4] Cadastrar Usuário
     [5] Criar Conta Corrente
+    [6] Ver Usuários Cadastrados
     [0] Sair
 
     ==> """
     while True:
         try:
             escolha = int(input(menu))
-            if escolha in [0, 1, 2, 3, 4, 5]:
+            if escolha in [0, 1, 2, 3, 4, 5, 6]:
                 return escolha
             else:
                 print("ERRO: Selecione um valor presente no menu!")
@@ -71,14 +76,32 @@ def exibir_extrato(saldo: float, extrato: dict):
     print(f"Saques: {extrato['saque']}")
     print(f"Depósitos: {extrato['deposito']}")
 
-def criar_user():
+def criar_user(lista_users: list):
     usuario = {
-        "nome": [],
-        "nasc": [],
-        "cpf": [],
-        "endereco": []
+        "nome": "",
+        "nasc": "",
+        "cpf": "",
+        "endereco": ""
     }
-    nome = obter_string("Digite seu nome: ")
+    decoracao("Cadastrar Usuário")
+    nome = obter_string("Digite seu nome: ", True)
+    nasc = int(obter_valor("Digite seu ano de nascimento: "))
+    cpf = obter_string("Informe seu CPF: ")
+    endereco = obter_string("Informe seu endereço: ")
+
+    usuario["nome"] = nome
+    usuario["nasc"] = nasc
+    usuario["cpf"] = cpf
+    usuario["endereco"] = endereco
+    lista_users.append(usuario)
+    print("Usuário Cadastrado com sucesso!")
+
+def listar_usuarios(lista_user: list):
+    decoracao("Lista de Usuários")
+    if not lista_user:
+        print("Não há registro de usuários")
+    for user in lista_user:
+        print(f"Nome: {user['nome']}, Nascimento: {user['nasc']}, CPF: {user['cpf']}, Endereço: {user['endereco']}")
 
 def banco():
     saldo = 0
@@ -86,6 +109,7 @@ def banco():
         "saque": [],
         "deposito": [] 
     }
+    lista_user = []
 
     while True:
         escolha = exibir_menu()
@@ -103,7 +127,9 @@ def banco():
         elif escolha == 3: #Extrato
             exibir_extrato(saldo, extrato)
         elif escolha == 4:
-            criar_user()
+            criar_user(lista_user)
+        elif escolha == 6:
+            listar_usuarios(lista_user)
         elif escolha == 0:
             print('~'*30)
             print("Programa encerrado com sucesso!")
