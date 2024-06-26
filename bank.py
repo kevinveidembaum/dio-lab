@@ -36,13 +36,14 @@ def exibir_menu() -> int:
     [4] Cadastrar Usuário
     [5] Criar Conta Corrente
     [6] Ver Usuários Cadastrados
+    [7] Ver Contas Cadastradas
     [0] Sair
 
     ==> """
     while True:
         try:
             escolha = int(input(menu))
-            if escolha in [0, 1, 2, 3, 4, 5, 6]:
+            if escolha in [0, 1, 2, 3, 4, 5, 6, 7]:
                 return escolha
             else:
                 print("ERRO: Selecione um valor presente no menu!")
@@ -122,7 +123,15 @@ def listar_usuarios(lista_user: list):
         print(f"Nome: {user['nome']}, Nascimento: {user['nasc']}, CPF: {user['cpf']}, Endereço: {user['endereco']}")
 
 
-def criar_conta(lista_user: list):
+def listar_contas(lista_conta: list):
+    decoracao("Lista de Contas")
+    if not lista_conta:
+        print("Não há registro de Contas")
+    for conta in lista_conta:
+        print(f"Proprietário da Conta: {conta['usuario']}, CPF: {conta['cpf_conta']}, Número da conta: {conta['numero']}, Agência: {conta['agencia']}")
+
+
+def criar_conta(lista_user: list, lista_conta: list):
 
     if not lista_user:
         print("Não há nenhum usuário registrado")
@@ -145,7 +154,19 @@ def criar_conta(lista_user: list):
         except ValueError:
             print("ERRO. Digite um valor válido!")
     
-    
+    agencia = "0001"
+    numero_conta = len(lista_conta) + 1
+
+    conta = {
+        "agencia": agencia,
+        "numero": numero_conta,
+        "usuario": usuario_conta['nome'],
+        "cpf_conta": usuario_conta['cpf']
+    }
+
+    lista_conta.append(conta)
+    decoracao(f"Sua conta criada com sucesso {usuario_conta['nome']}!")
+    print(f"Agência: {agencia}, Número da conta: {numero_conta}")
 
 
     
@@ -178,9 +199,11 @@ def banco():
         elif escolha == 4: #Criar Usuário
             criar_user(lista_user)
         elif escolha == 5: #Criar Conta Corrente
-            criar_conta(lista_user)
+            criar_conta(lista_user, lista_conta)
         elif escolha == 6: #Listar Usuários Cadastrados
             listar_usuarios(lista_user)
+        elif escolha == 7: #Listar Contas Cadastradas
+            listar_contas(lista_conta)
         elif escolha == 0:
             decoracao("Programa encerrado com sucesso!", "~", 35)
             break
