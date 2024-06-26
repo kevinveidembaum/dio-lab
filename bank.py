@@ -129,6 +129,7 @@ def listar_contas(lista_conta: list):
         print("Não há registro de Contas")
     for conta in lista_conta:
         print(f"Proprietário da Conta: {conta['usuario']}, CPF: {conta['cpf_conta']}, Número da conta: {conta['numero']}, Agência: {conta['agencia']}")
+        print()
 
 
 def criar_conta(lista_user: list, lista_conta: list):
@@ -167,9 +168,6 @@ def criar_conta(lista_user: list, lista_conta: list):
     lista_conta.append(conta)
     decoracao(f"Sua conta criada com sucesso {usuario_conta['nome']}!")
     print(f"Agência: {agencia}, Número da conta: {numero_conta}")
-
-
-    
 
 
 def banco():
