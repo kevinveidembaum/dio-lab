@@ -126,22 +126,30 @@ def banco():
                 print(f"Transação realizada com sucesso.")
         elif escolha == 3: #Extrato
             exibir_extrato(saldo, extrato)
-        elif escolha == 4:
+        elif escolha == 4: #Criar Usuário
             criar_user(lista_user)
-        elif escolha == 6:
+        elif escolha == 6: #Listar Usuários Cadastrados
             listar_usuarios(lista_user)
         elif escolha == 0:
-            print('~'*30)
-            print("Programa encerrado com sucesso!")
+            decoracao("Programa encerrado com sucesso!", "~", 35)
             break
         else:
             print("Digite um valor válido!")
 
-def decoracao(msg):
-    tam = len(msg) + 4
-    print("-="*tam)
-    print(f"{msg:^25}")
-    print("-="*tam)
+def decoracao(msg: str, simbolo: str = "-=", largura: int = 25):
+    """Função para decorar e destacar mensagens no terminal.
+    
+    Args:
+        msg (str): A mensagem a ser destacada.
+        simbolo (str): O símbolo a ser usado na decoração. Padrão é '-='.
+        largura (int): A largura total da linha de decoração. Padrão é 25.
+    """
+    linha = simbolo * ((largura // len(simbolo)) + 1)
+    linha = linha[:largura]
+    
+    print(linha)
+    print(f"{msg:^{largura}}")
+    print(linha)
 
 def main():
     banco()
