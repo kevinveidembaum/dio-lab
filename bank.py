@@ -85,23 +85,34 @@ def criar_user(lista_users: list):
     }
     decoracao("Cadastrar Usuário")
     nome = obter_string("Digite seu nome: ", True)
-    nasc = int(obter_valor("Digite seu ano de nascimento: "))
-    cpf = obter_string("Informe seu CPF: ")
+    nasc = obter_valor("Digite seu ano de nascimento: ")
+    while True:
+            cpf = obter_string("Informe seu CPF: ")
+            if any(user['cpf'] in cpf for user in lista_users):
+                print("Já tem um cadastro com esse CPF, tente novamente!")
+            else:
+                break
+    
     endereco = obter_string("Informe seu endereço: ")
 
     usuario["nome"] = nome
     usuario["nasc"] = nasc
     usuario["cpf"] = cpf
     usuario["endereco"] = endereco
-    lista_users.append(usuario)
-    print("Usuário Cadastrado com sucesso!")
 
+    lista_users.append(usuario)
+    decoracao("Usuário Cadastrado com sucesso!", "≃", 35)
+            
 def listar_usuarios(lista_user: list):
     decoracao("Lista de Usuários")
     if not lista_user:
         print("Não há registro de usuários")
     for user in lista_user:
         print(f"Nome: {user['nome']}, Nascimento: {user['nasc']}, CPF: {user['cpf']}, Endereço: {user['endereco']}")
+
+#def criar_conta(nome: str, cpf: str, agencia: int = 0001):
+    
+
 
 def banco():
     saldo = 0
@@ -145,7 +156,7 @@ def decoracao(msg: str, simbolo: str = "-=", largura: int = 25):
         largura (int): A largura total da linha de decoração. Padrão é 25.
     """
     linha = simbolo * ((largura // len(simbolo)) + 1)
-    linha = linha[:largura]
+    linha = linha[:largura] #Comprimento da linha
     
     print(linha)
     print(f"{msg:^{largura}}")
