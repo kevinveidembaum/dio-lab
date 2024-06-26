@@ -1,4 +1,4 @@
-def obter_string(mensagem: str, nome=False) -> str:
+def obter_string(mensagem: str, nome=False, cpf=False) -> str:
     while True:
         try:
             user = str(input(mensagem)).strip()
@@ -7,9 +7,15 @@ def obter_string(mensagem: str, nome=False) -> str:
                     return user
                 else:
                     print("Digite um nome válido!")
-            else:
-                return user
+
+            if cpf:
+                if user.isnumeric():
+                    return user
+                else:
+                    print("Informe um CPF válido!")
             
+            if not nome and not cpf:
+                return user
         except ValueError:
             print("ERRO: Informe uma String Válida!")
 
@@ -86,14 +92,15 @@ def criar_user(lista_users: list):
     decoracao("Cadastrar Usuário")
     nome = obter_string("Digite seu nome: ", True)
     nasc = obter_valor("Digite seu ano de nascimento: ")
+    endereco = obter_string("Informe seu endereço: ")
     while True:
-            cpf = obter_string("Informe seu CPF: ")
+            cpf = obter_string("Informe seu CPF: ", False, True)
             if any(user['cpf'] in cpf for user in lista_users):
                 print("Já tem um cadastro com esse CPF, tente novamente!")
             else:
                 break
     
-    endereco = obter_string("Informe seu endereço: ")
+    
 
     usuario["nome"] = nome
     usuario["nasc"] = nasc
@@ -110,7 +117,10 @@ def listar_usuarios(lista_user: list):
     for user in lista_user:
         print(f"Nome: {user['nome']}, Nascimento: {user['nasc']}, CPF: {user['cpf']}, Endereço: {user['endereco']}")
 
-#def criar_conta(nome: str, cpf: str, agencia: int = 0001):
+def criar_conta(usuario: list):
+    agencia = "0001"
+    numero_conta = 0
+    print(usuario[0])
     
 
 
@@ -139,6 +149,8 @@ def banco():
             exibir_extrato(saldo, extrato)
         elif escolha == 4: #Criar Usuário
             criar_user(lista_user)
+        elif escolha == 5: #Criar Conta Corrente
+            criar_conta(lista_user)
         elif escolha == 6: #Listar Usuários Cadastrados
             listar_usuarios(lista_user)
         elif escolha == 0:
