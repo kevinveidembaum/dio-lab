@@ -1,3 +1,5 @@
+import re
+
 def obter_string(mensagem: str, nome=False, cpf=False) -> str:
     """
     Solicita uma string do usuário com base em parâmetros específicos.
@@ -19,10 +21,11 @@ def obter_string(mensagem: str, nome=False, cpf=False) -> str:
                 else:
                     print("Digite um nome válido!")
             elif cpf:
-                if user.isnumeric():
-                    return user
+                user = re.sub(r'\D', '', user)  # Remove caracteres não numéricos
+                if len(user) == 11 and user.isnumeric():
+                    return f"{user[:3]}.{user[3:6]}.{user[6:9]}-{user[9:]}"  # Formata o CPF
                 else:
-                    print("Informe um CPF válido!")
+                    print("Informe um CPF válido com 11 digitos!")
             else:
                 return user
         except ValueError:
