@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from datetime import date
 
 class PessoaFisica:
@@ -22,12 +23,12 @@ class Cliente(PessoaFisica):
         return super().__str__() + f', Endereço: {self._endereco}, Contas: {self._contas}'
     
 
-    #def realizar_transacao(conta: Conta, transacao: Transacao):
-        
+    def realizar_transacao(conta: Conta, transacao: Transacao):
+        pass
     
 
-    #def adicionar_conta(conta: Conta):
-
+    def adicionar_conta(conta: Conta):
+        pass
     
 
 class Conta:
@@ -57,6 +58,47 @@ class Conta:
 
 
     def depositar(valor: float) -> bool:
+        pass
+
+
+class ContaCorrente(Conta):
+    def __init__(self, saldo: float, numero: int, agencia: str, cliente: Cliente, historico) -> None:
+        super().__init__(saldo, numero, agencia, cliente, historico)
+
+
+class Transacao:
+    @abstractmethod
+    def registrar(conta: Conta):
+        pass
+
+
+class Historico:
+    def __init__(self) -> None:
+        pass
+
+
+    #atributo transaçoes do tipo Transacao
+
+
+    def adicionar_transacao(transacao: Transacao):
+        pass
+
+
+class Deposito(Transacao):
+    def __init__(self, valor: float) -> None:
+        self._valor = valor
+
+
+    def registrar(conta: Conta): #Implementar funcao de registrar
+        pass
+
+
+class Saque(Transacao):
+    def __init__(self, valor: float) -> None:
+        self._valor = valor
+
+
+    def registrar(conta: Conta): #Implementar funcao de registrar
         pass
 
 
