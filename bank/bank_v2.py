@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from datetime import date
 
 class PessoaFisica:
@@ -74,29 +74,43 @@ class Conta:
         return self._historico
 
 
-    
-
-
 class ContaCorrente(Conta):
-    def __init__(self, saldo: float, numero: int, agencia: str, cliente: Cliente, historico) -> None:
-        super().__init__(saldo, numero, agencia, cliente, historico)
+    def __init__(self, cliente: Cliente, numero: int, limite:float = 500, limites_saque:int = 5) -> None:
+        super().__init__(cliente, numero)
+        self._limite = limite
+        self._limites_saque = limites_saque
 
 
-class Transacao:
+    def sacar(self, valor:float):
+        pass
+
+
+    def __str__(self) -> str:
+        pass
+
+
+class Transacao(ABC):
+    @property
     @abstractmethod
-    def registrar(conta: Conta):
+    def valor(self):
+        pass
+
+    @abstractmethod
+    def registrar(self, conta: Conta):
         pass
 
 
 class Historico:
     def __init__(self) -> None:
-        pass
+        self._transacoes = []
 
 
-    #atributo transaçoes do tipo Transacao
+    @property
+    def transacoes(self):
+        return self._transacoes
 
 
-    def adicionar_transacao(transacao: Transacao):
+    def adicionar_transacao(self, transacao: Transacao):
         pass
 
 
@@ -104,6 +118,9 @@ class Deposito(Transacao):
     def __init__(self, valor: float) -> None:
         self._valor = valor
 
+    @property
+    def valor(self):
+        return self._valor
 
     def registrar(conta: Conta): #Implementar funcao de registrar
         pass
@@ -113,6 +130,11 @@ class Saque(Transacao):
     def __init__(self, valor: float) -> None:
         self._valor = valor
 
+    
+    @property
+    def valor(self):
+        return self._valor
+    
 
     def registrar(conta: Conta): #Implementar funcao de registrar
         pass
