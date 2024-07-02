@@ -13,44 +13,32 @@ class PessoaFisica:
 
 
 class Cliente(PessoaFisica):
-    def __init__(self, cpf: str, nome: str, data_nascimento: date, endereco: str, contas: list) -> None:
+    def __init__(self, cpf: str, nome: str, data_nascimento: date, endereco: str) -> None:
         super().__init__(cpf, nome, data_nascimento)
         self._endereco = endereco
-        self._contas = contas
-
-    
-    def __str__(self) -> str:
-        return super().__str__() + f', Endereço: {self._endereco}, Contas: {self._contas}'
+        self._contas = []
     
 
-    def realizar_transacao(conta: Conta, transacao: Transacao):
-        pass
+    def realizar_transacao(self, conta, transacao): #tipo Conta, e tipo Transacao
+        transacao.registrar(conta)
     
 
-    def adicionar_conta(conta: Conta):
-        pass
+    def adicionar_conta(self, conta): #tipo Conta
+        self._contas.append(conta)
     
 
 class Conta:
-    def __init__(self, saldo: float, numero: int, agencia: str, cliente: Cliente, historico) -> None:
-        self._saldo = saldo
+    def __init__(self, cliente: Cliente, numero: int) -> None:
+        self._saldo = 0
         self._numero = numero
-        self._agencia = agencia
+        self._agencia = '0001'
         self._cliente = cliente
-        self.historico = historico
-
-
-    def __str__(self) -> str:
-        return f'Saldo: {self._saldo}, Agência: {self._agencia}, Cliente: {self._cliente._nome}'
-
-
-    def saldo(self) -> float:
-        return self._saldo
+        self._historico = Historico()
 
 
     @classmethod
     def nova_conta(cls, cliente: Cliente, numero: int):
-        pass
+        return cls(cliente, numero)
 
 
     def sacar(valor: float) -> bool:
@@ -59,6 +47,34 @@ class Conta:
 
     def depositar(valor: float) -> bool:
         pass
+
+
+    @property
+    def cliente(self):
+        return self._cliente
+
+
+    @property
+    def saldo(self) -> float:
+        return self._saldo
+
+
+    @property
+    def numero(self):
+        return self._numero
+    
+
+    @property
+    def agencia(self):
+        return self._agencia
+    
+
+    @property
+    def historic(self):
+        return self._historico
+
+
+    
 
 
 class ContaCorrente(Conta):
@@ -105,7 +121,5 @@ class Saque(Transacao):
 
 birth_date = date(1990, 12, 4)
 
-c = Cliente('1234', 'Kev', birth_date, 'qwer', [1, 2])
-conta = Conta(1200, 123, 'itau', c, 0)
-print(conta.__str__())
-print(conta.saldo())
+c = Cliente('1234', 'Kev', birth_date, 'rua jjj')
+conta = Conta(c, 123)
