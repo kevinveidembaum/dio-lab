@@ -41,12 +41,30 @@ class Conta:
         return cls(cliente, numero)
 
 
-    def sacar(valor: float) -> bool:
-        pass
+    def sacar(self, valor_saque: float) -> bool:
+        if valor_saque > self._saldo:
+            print("Saldo insuficiente para realizar transação!")
+            return False
+        elif valor_saque <= 0:
+            print("Digite um valor maior que zero!")
+            return False
+        else:
+            self._saldo -= valor_saque
+            print("Transação de Saque realizada com sucesso!")
 
 
-    def depositar(valor: float) -> bool:
-        pass
+        return True
+
+
+
+    def depositar(self, valor_deposito: float) -> bool:
+        if valor_deposito > 0:
+            self._saldo += valor_deposito
+            print("Transação Depósito realizada com sucesso!")
+            return True
+        else:
+            print("Insira um valor válido!")
+            return False
 
 
     @property
@@ -145,3 +163,6 @@ birth_date = date(1990, 12, 4)
 
 c = Cliente('1234', 'Kev', birth_date, 'rua jjj')
 conta = Conta(c, 123)
+conta.depositar(0)
+conta.sacar(100)
+conta.sacar(0)
